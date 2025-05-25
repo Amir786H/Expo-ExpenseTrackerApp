@@ -1,34 +1,104 @@
 import BackButton from '@/components/BackButton'
+import Button from '@/components/Button'
+import Input from '@/components/Input'
 import ScreenWrapper from '@/components/ScreenWrapper'
 import Typo from '@/components/Typo'
 import { colors, spacingX, spacingY } from '@/constants/theme'
 import { verticalScale } from '@/utils/styling'
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { useRouter } from 'expo-router'
+import * as Icons from 'phosphor-react-native'
+import React, { useRef, useState } from 'react'
+import { Alert, Pressable, StyleSheet, View } from 'react-native'
+import Animated, { FadeIn } from 'react-native-reanimated'
+
 
 const Login = () => {
+  const emailRef = useRef("");
+  const passwordRef = useRef("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter();
+
+  const handleSubmit = async () => {
+    if (!emailRef.current || !passwordRef.current) {
+      Alert.alert("Login", "Please fill in all fields");
+      return;
+    }
+  }
+
   return (
     <ScreenWrapper>
       <View style={styles.container}>
         <BackButton iconSize={28} />
 
-        <View style={{ gap: 5, marginTop: spacingY._20 }}>
+        <Animated.View
+          entering={FadeIn.duration(1000).delay(200)}
+          style={{ gap: 5, marginTop: spacingY._20 }}
+        >
           <Typo size={30} fontWeight={"800"}>
             Hey,
           </Typo>
           <Typo size={30} fontWeight={"800"}>
             Welcome Back
           </Typo>
-        </View>
+        </Animated.View>
 
         {/* login form */}
         <View style={styles.form}>
-            <Typo size={16} color={colors.textLighter}>
-               Login now to track all your expenses
+          <Animated.View entering={FadeIn.duration(2000).delay(300)}>
+            <Typo
+              size={16}
+              color={colors.textLighter}
+            >
+              Login now to track all your expenses
             </Typo>
-            {/* input */}
+          </Animated.View>
+          {/* input */}
+          <Input
+            placeholder='Enter your email'
+            onChangeText={(value) => emailRef.current = value}
+            icon={<Icons.At size={verticalScale(26)}
+              color={colors.neutral300}
+              weight='fill'
+            />
+            }
+            inputStyle={{ fontSize: verticalScale(16) }}
+          />
+          <Input
+            placeholder='Enter your password'
+            secureTextEntry
+            onChangeText={(value) => passwordRef.current = value}
+            icon={<Icons.Lock size={verticalScale(26)}
+              color={colors.neutral300}
+              weight='fill'
+            />
+            }
+            inputStyle={{ fontSize: verticalScale(16) }}
+          />
+          <Typo size={14} color={colors.text}
+            style={{ alignSelf: 'flex-end' }}
+          >
+            Forgot Password?
+          </Typo>
+
+          <Button loading={isLoading} onPress={handleSubmit}>
+            <Typo fontWeight={"700"} color={colors.black} size={21}>
+              Login
+            </Typo>
+          </Button>
         </View>
 
+        {/* footer */}
+        <View style={styles.footer}>
+          <Typo size={15} color={colors.text}>
+            Dont't have an account?
+          </Typo>
+          <Pressable onPress={() => router.navigate('../register')}>
+            <Typo size={15} color={colors.primary} fontWeight={"700"}>
+              Sign up
+            </Typo>
+          </Pressable>
+        </View>
       </View>
     </ScreenWrapper>
   )
