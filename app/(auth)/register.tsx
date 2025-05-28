@@ -10,6 +10,7 @@ import { useRouter } from 'expo-router'
 import * as Icons from 'phosphor-react-native'
 import React, { useRef, useState } from 'react'
 import { Alert, Pressable, StyleSheet, View } from 'react-native'
+import Animated, { FadeInDown } from 'react-native-reanimated'
 
 const Register = () => {
   const emailRef = useRef("");
@@ -58,37 +59,45 @@ const Register = () => {
             Create an account to track all your expenses
           </Typo>
           {/* input */}
-          <Input
-            placeholder='Enter your name'
-            onChangeText={(value) => nameRef.current = value}
-            icon={<Icons.User size={verticalScale(26)}
-              color={colors.neutral300}
-              weight='fill'
+          <Animated.View entering={FadeInDown.duration(500).delay(400).springify().damping(10)}>
+            <Input
+              placeholder='Enter your name'
+              onChangeText={(value) => nameRef.current = value}
+              icon={<Icons.User size={verticalScale(26)}
+                color={colors.neutral300}
+                weight='fill'
+              />
+              }
+              inputStyle={{ fontSize: verticalScale(16) }}
             />
-            }
-            inputStyle={{ fontSize: verticalScale(16) }}
-          />
-          <Input
-            placeholder='Enter your email'
-            onChangeText={(value) => emailRef.current = value}
-            icon={<Icons.At size={verticalScale(26)}
-              color={colors.neutral300}
-              weight='fill'
+          </Animated.View>
+
+          <Animated.View entering={FadeInDown.duration(500).delay(500).springify().damping(10)}>
+            <Input
+              placeholder='Enter your email'
+              onChangeText={(value) => emailRef.current = value}
+              icon={<Icons.At size={verticalScale(26)}
+                color={colors.neutral300}
+                weight='fill'
+              />
+              }
+              inputStyle={{ fontSize: verticalScale(16) }}
             />
-            }
-            inputStyle={{ fontSize: verticalScale(16) }}
-          />
-          <Input
-            placeholder='Enter your password'
-            secureTextEntry
-            onChangeText={(value) => passwordRef.current = value}
-            icon={<Icons.Lock size={verticalScale(26)}
-              color={colors.neutral300}
-              weight='fill'
+          </Animated.View>
+
+          <Animated.View entering={FadeInDown.duration(500).delay(600).springify().damping(10)}>
+            <Input
+              placeholder='Enter your password'
+              secureTextEntry
+              onChangeText={(value) => passwordRef.current = value}
+              icon={<Icons.Lock size={verticalScale(26)}
+                color={colors.neutral300}
+                weight='fill'
+              />
+              }
+              inputStyle={{ fontSize: verticalScale(16) }}
             />
-            }
-            inputStyle={{ fontSize: verticalScale(16) }}
-          />
+          </Animated.View>
 
           <Button loading={isLoading} onPress={handleSubmit}>
             <Typo fontWeight={"700"} color={colors.black} size={21}>

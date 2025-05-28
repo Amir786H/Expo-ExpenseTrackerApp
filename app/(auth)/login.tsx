@@ -10,7 +10,7 @@ import { useRouter } from 'expo-router'
 import * as Icons from 'phosphor-react-native'
 import React, { useRef, useState } from 'react'
 import { Alert, Pressable, StyleSheet, View } from 'react-native'
-import Animated, { FadeIn } from 'react-native-reanimated'
+import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated'
 
 
 const Login = () => {
@@ -62,27 +62,33 @@ const Login = () => {
             </Typo>
           </Animated.View>
           {/* input */}
-          <Input
-            placeholder='Enter your email'
-            onChangeText={(value) => emailRef.current = value}
-            icon={<Icons.At size={verticalScale(26)}
-              color={colors.neutral300}
-              weight='fill'
+          <Animated.View entering={FadeInDown.duration(500).delay(500).springify().damping(10)}>
+            <Input
+              placeholder='Enter your email'
+              onChangeText={(value) => emailRef.current = value}
+              icon={<Icons.At size={verticalScale(26)}
+                color={colors.neutral300}
+                weight='fill'
+              />
+              }
+              inputStyle={{ fontSize: verticalScale(16) }}
             />
-            }
-            inputStyle={{ fontSize: verticalScale(16) }}
-          />
-          <Input
-            placeholder='Enter your password'
-            secureTextEntry
-            onChangeText={(value) => passwordRef.current = value}
-            icon={<Icons.Lock size={verticalScale(26)}
-              color={colors.neutral300}
-              weight='fill'
+          </Animated.View>
+
+          <Animated.View entering={FadeInDown.duration(500).delay(600).springify().damping(10)}>
+            <Input
+              placeholder='Enter your password'
+              secureTextEntry
+              onChangeText={(value) => passwordRef.current = value}
+              icon={<Icons.Lock size={verticalScale(26)}
+                color={colors.neutral300}
+                weight='fill'
+              />
+              }
+              inputStyle={{ fontSize: verticalScale(16) }}
             />
-            }
-            inputStyle={{ fontSize: verticalScale(16) }}
-          />
+          </Animated.View>
+
           <Typo size={14} color={colors.text}
             style={{ alignSelf: 'flex-end' }}
           >
