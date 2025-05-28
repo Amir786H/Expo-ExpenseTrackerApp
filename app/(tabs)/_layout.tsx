@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native'
 
 const _layout = () => {
   return (
-   <Tabs tabBar={CustomTabs}>
+   <Tabs tabBar={CustomTabs} screenOptions={{ headerShown: false }} >
       <Tabs.Screen
         name="index"
         options={{

@@ -1,12 +1,44 @@
-import { colors } from '@/constants/theme';
+import { colors, spacingY } from '@/constants/theme';
+import { verticalScale } from '@/utils/styling';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { Text } from '@react-navigation/elements';
-import { TouchableOpacity, View } from 'react-native';
+import * as Icons from 'phosphor-react-native';
+import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 export default function CustomTabs({ state, descriptors, navigation }: BottomTabBarProps) {
 
+  const tabBarIcons: any = {
+    index: (isFocused: boolean) => (
+      <Icons.House
+        size={verticalScale(30)}
+        color={isFocused ? colors.primary : colors.white}
+        weight={isFocused ? 'fill' : 'regular'}
+      />
+    ),
+    statistics: (isFocused: boolean) => (
+      <Icons.ChartBar
+        size={verticalScale(30)}
+        color={isFocused ? colors.primary : colors.white}
+        weight={isFocused ? 'fill' : 'regular'}
+      />
+    ),
+    wallet: (isFocused: boolean) => (
+      <Icons.Wallet
+        size={verticalScale(30)}
+        color={isFocused ? colors.primary : colors.white}
+        weight={isFocused ? 'fill' : 'regular'}
+      />
+    ),
+    profile: (isFocused: boolean) => (
+      <Icons.User
+        size={verticalScale(30)}
+        color={isFocused ? colors.primary : colors.white}
+        weight={isFocused ? 'fill' : 'regular'}
+      />
+    ),
+  }
+
   return (
-    <View style={{ flexDirection: 'row', width: '100%', height: 100 }}>
+    <View style={styles.tabBar}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label: any =
@@ -40,19 +72,41 @@ export default function CustomTabs({ state, descriptors, navigation }: BottomTab
         return (
           <TouchableOpacity
             // href={buildHref(route.name, route.params)}
+            key={route.name}
             accessibilityState={isFocused ? { selected: true } : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
             testID={options.tabBarButtonTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{ flex: 1 }}
+            style={styles.tabBarItem}
           >
-            <Text style={{ color: isFocused ? colors.primary : colors.neutral800 }}>
+            {
+              tabBarIcons[route.name] && tabBarIcons[route.name](isFocused)
+            }
+            {/* <Text style={{color: isFocused ? colors.primary : colors.white}}>
               {label}
-            </Text>
+            </Text> */}
           </TouchableOpacity>
         );
       })}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  tabBar: {
+    flexDirection: 'row',
+    width: '100%',
+    height: Platform.OS == 'ios' ? verticalScale(73) : verticalScale(80),
+    backgroundColor: colors.neutral800,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderTopColor: colors.neutral700,
+    borderTopWidth: 1
+  },
+  tabBarItem: {
+    marginBottom: Platform.OS == 'ios' ? spacingY._10 : spacingY._20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
+})

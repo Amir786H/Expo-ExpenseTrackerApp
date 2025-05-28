@@ -1,14 +1,22 @@
+import ScreenWrapper from '@/components/ScreenWrapper'
+import { spacingX } from '@/constants/theme'
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 
 const Profile = () => {
   return (
-    <View>
+    <ScreenWrapper>
       <Text>Profile</Text>
-    </View>
+    </ScreenWrapper>
   )
 }
 
 export default Profile
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: spacingX._20,
+  },
+  
+})
