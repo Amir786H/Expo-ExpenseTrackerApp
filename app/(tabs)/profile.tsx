@@ -1,18 +1,23 @@
 import Header from '@/components/Header'
 import ScreenWrapper from '@/components/ScreenWrapper'
 import Typo from '@/components/Typo'
+import { auth } from '@/config/firebase'
 import { colors, radius, spacingX, spacingY } from '@/constants/theme'
 import { useAuth } from '@/contexts/authContext'
 import { getProfileImage } from '@/services/imageService'
 import { accountOptionType } from '@/types'
 import { verticalScale } from '@/utils/styling'
 import { Image } from 'expo-image'
+import { useRouter } from 'expo-router'
+import { signOut } from 'firebase/auth'
 import * as Icons from 'phosphor-react-native'
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native'
+import Animated, { FadeInDown } from 'react-native-reanimated'
 
 const Profile = () => {
   const { user } = useAuth();
+  const router = useRouter();
 
   const accountsOptions: accountOptionType[] = [
     {
@@ -49,6 +54,34 @@ const Profile = () => {
     },
   ]
 
+  const handleLogout = async () => {
+    await signOut(auth);
+  }
+
+  const showLogoutAlert = () => {
+    Alert.alert("Confirm", "Are you sure you want to logout?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Logout"),
+        style: "cancel"
+      },
+      {
+        text: "Logout",
+        onPress: () => handleLogout(),
+        style: "destructive"
+
+      }
+    ])
+  }
+
+  const handlePress = async (item: accountOptionType) => {
+    if (item.title == "Logout") {
+      showLogoutAlert();
+    }
+
+    if (item.routeName) router.push(item.routeName);
+  }
+
   return (
     <ScreenWrapper>
       <View style={styles.container}>
@@ -83,11 +116,30 @@ const Profile = () => {
           {
             accountsOptions.map((item, index) => {
               return (
-                <View key={index} >
-                  <Typo>
-                    {item.title}
-                  </Typo>
-                </View>
+                <Animated.View
+                  entering={FadeInDown.delay(index * 50).springify().damping(14)}
+                  key={index.toString()}
+                  style={styles.listItem}
+                >
+                  <TouchableOpacity style={styles.flexRow} onPress={() => handlePress(item)}>
+                    {/* icon */}
+                    <View style={[
+                      styles.listIcon, {
+                        backgroundColor: item?.bgColor
+                      }
+                    ]}>
+                      {item.icon && item.icon}
+                    </View>
+                    <View style={{ flex: 1 }}>
+                      <Typo size={16} fontWeight={'500'}>{item.title}</Typo>
+                    </View>
+                    <Icons.CaretRight
+                      size={verticalScale(20)}
+                      color={colors.white} weight='bold'
+                      style={{ alignSelf: 'center' }}
+                    />
+                  </TouchableOpacity>
+                </Animated.View>
               )
             })
           }
@@ -128,7 +180,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.neutral100,
     shadowColor: colors.black,
     shadowOffset: { width: 0, height: 0 },
-
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    elevation: 4,
+    padding: 5
   },
   nameContainer: {
     gap: verticalScale(4),
@@ -141,10 +196,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: radius._15,
-    borderCurve: "continuous"
+    borderCurve: "continuous",
   },
   listItem: {
-    marginBottom: verticalScale(17),
+    marginBottom: verticalScale(20),
   },
   accountOptions: {
     marginTop: spacingY._35,
@@ -152,6 +207,6 @@ const styles = StyleSheet.create({
   flexRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacingX._10
+    gap: spacingX._10,
   }
 })
