@@ -11,14 +11,16 @@ import { updateUser } from '@/services/userService'
 import { UserDataType } from '@/types'
 import { scale, verticalScale } from '@/utils/styling'
 import { Image } from 'expo-image'
+import * as ImagePicker from 'expo-image-picker'
 import { useRouter } from 'expo-router'
 import * as Icons from 'phosphor-react-native'
 import React, { useEffect, useState } from 'react'
 import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
 
+
 const ProfileModal = () => {
 
-  const {user, updateUserData} = useAuth();
+  const { user, updateUserData } = useAuth();
   const [userData, setUserData] = useState<UserDataType>({
     name: "",
     image: null,
@@ -28,8 +30,8 @@ const ProfileModal = () => {
 
 
   const onSubmit = async () => {
-    let {name, image} = userData;
-    if(!name.trim()){
+    let { name, image } = userData;
+    if (!name.trim()) {
       Alert.alert("User", "Please fill all the fields");
       return;
     }
@@ -37,11 +39,25 @@ const ProfileModal = () => {
     setLoading(true);
     const res = await updateUser(user?.uid as string, userData);
     setLoading(false);
-    if(res.success){
+    if (res.success) {
       updateUserData(user?.uid as string);
       router.back();
     } else {
       Alert.alert("User", res.msg)
+    }
+  }
+
+
+  const onPickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      // allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.5,
+    });
+    // console.log("Image Picker Result:", result);
+    if(!result.canceled) {
+      setUserData({...userData, image: result.assets[0]});
     }
   }
 
@@ -50,7 +66,7 @@ const ProfileModal = () => {
       name: user?.name || "",
       image: user?.image || null,
     })
-  },[])
+  }, [user])
 
   return (
     <ModalWrapper>
@@ -71,7 +87,7 @@ const ProfileModal = () => {
               transition={100}
             />
 
-            <TouchableOpacity style={styles.editIcon}>
+            <TouchableOpacity onPress={onPickImage} style={styles.editIcon}>
               <Icons.Pencil
                 size={scale(20)}
                 color={colors.neutral800}
