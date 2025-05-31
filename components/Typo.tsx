@@ -6,6 +6,7 @@ import { Text, TextStyle, View } from 'react-native'
 
 const Typo = ({
     size,
+    numberOfLines,
     color = colors.text,
     fontWeight = '400',
     children,
@@ -21,7 +22,11 @@ const Typo = ({
 
     return (
         <View>
-            <Text style={[textStyle, style]} {...textProps}>{children}</Text>
+            <Text style={[textStyle, style]}
+                {...textProps}
+                numberOfLines={numberOfLines}>
+                {children}
+            </Text>
         </View>
     )
 }
