@@ -9,7 +9,8 @@ export const uploadFileToCloudinary = async (
     file: { uri: string } | string,
     folderName: string
 ): Promise<ResponseType> => {
-    console.log(CLOUDINARY_API_URL)
+    // console.log(CLOUDINARY_API_URL)
+    if (!file) return { success: true, data: null };
     try {
         if (typeof file == 'string') {
             return { success: true, data: file };
@@ -51,7 +52,7 @@ export const getProfileImage = (file: any) => {
 }
 
 export const getFilePath = (file: any) => {
-     if (file && typeof file == 'string') return file;
+    if (file && typeof file == 'string') return file;
     if (file && typeof file == 'object') return file.uri;
 
     return null;

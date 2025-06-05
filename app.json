@@ -1,7 +1,6 @@
 {
   "expo": {
     "name": "expense-tracker",
-    "slug": "expense-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -16,7 +15,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.amir786.expensetracker"
     },
     "web": {
       "bundler": "metro",
@@ -37,6 +37,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "be88223e-6160-4095-bc4c-01e5ac253e2f"
+      }
     }
   }
 }
