@@ -105,7 +105,6 @@ const WalletModal = () => {
                 <ScrollView contentContainerStyle={styles.form} showsVerticalScrollIndicator={false}>
 
                     <View style={styles.inputContainer}>
-                        {/* Add your input fields here */}
                         <Typo color={colors.neutral200}>Wallet Name</Typo>
                         <Input
                             placeholder="Salary"

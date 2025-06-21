@@ -22,7 +22,7 @@ const Wallet = () => {
     where("uid", "==", user?.uid),
     orderBy("created", "desc")
   ]);
-  console.log("Wallets Data:", wallets.length);
+  // console.log("Wallets Data:", wallets.length);
 
   const getTotalBalance = () =>
     wallets.reduce((total, item) => {

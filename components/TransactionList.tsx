@@ -5,6 +5,7 @@ import { verticalScale } from '@/utils/styling'
 import { FlashList } from '@shopify/flash-list'
 import React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import Animated, { FadeInDown } from 'react-native-reanimated'
 import Loading from './Loading'
 import Typo from './Typo'
 
@@ -79,8 +80,11 @@ const TransactionItem = ({
 
 
     return (
-        <View>
-            <TouchableOpacity style={styles.row}>
+        <Animated.View entering={FadeInDown.delay(index * 70)
+            .springify()
+            .damping(13)}
+        >
+            <TouchableOpacity style={styles.row} onPress={() => handleClick(item)}>
                 <View style={[styles.icon, { backgroundColor: category.bgColor }]}>
                     {IconComponent && (
                         <IconComponent
@@ -90,8 +94,24 @@ const TransactionItem = ({
                         />
                     )}
                 </View>
+
+                <View style={styles.categoryDes}>
+                    <Typo size={17}>{category.label}</Typo>
+                    <Typo size={12} textProps={{ numberOfLines: 1 }}>
+                        Paid wifi bill
+                    </Typo>
+                </View>
+
+                <View style={styles.amountDate}>
+                    <Typo fontWeight={'500'} color={colors.primary}>
+                        - $23
+                    </Typo>
+                    <Typo size={13} color={colors.neutral400}>
+                        12 jan
+                    </Typo>
+                </View>
             </TouchableOpacity>
-        </View>
+        </Animated.View>
     )
 }
 

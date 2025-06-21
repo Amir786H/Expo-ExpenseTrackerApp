@@ -9,16 +9,16 @@ const index = () => {
         setTimeout(() => {
             router.push('/(auth)/welcome')
         }, 2000);
-    },[])
-  return (
-    <View style={styles.container}>
-        <Image 
-            source={require('../assets/images/splashImage1.png')}
-            style={styles.logo}
-            resizeMode='contain'
+    }, [])
+    return (
+        <View style={styles.container}>
+            <Image
+                source={require('../assets/images/splashImage1.png')}
+                style={styles.logo}
+                resizeMode='contain'
             />
-    </View>
-  )
+        </View>
+    )
 }
 
 export default index
