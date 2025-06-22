@@ -5,7 +5,11 @@ import { StyleSheet } from 'react-native';
 
 const StackLayout = () => {
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack screenOptions={{ headerShown: false }} initialRouteName='index'>
+      {/* Below screen added for navigation fixes */}
+      <Stack.Screen
+        name="index"
+      />
       <Stack.Screen
         name="(modals)/profileModal"
         options={{
