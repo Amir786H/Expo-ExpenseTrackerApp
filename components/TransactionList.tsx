@@ -1,8 +1,9 @@
-import { expenseCategories } from '@/constants/data'
+import { expenseCategories, incomeCategory } from '@/constants/data'
 import { colors, radius, spacingX, spacingY } from '@/constants/theme'
 import { TransactionItemProps, TransactionListType } from '@/types'
 import { verticalScale } from '@/utils/styling'
 import { FlashList } from '@shopify/flash-list'
+import { Timestamp } from 'firebase/firestore'
 import React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import Animated, { FadeInDown } from 'react-native-reanimated'
@@ -75,9 +76,14 @@ const TransactionItem = ({
     item, index, handleClick
 }: TransactionItemProps) => {
 
-    let category = expenseCategories['groceries'];
+    // let category = expenseCategories['groceries'];
+    let category = item?.type == 'income' ? incomeCategory : expenseCategories[item.category!];
     const IconComponent = category.icon;
 
+    const date = (item?.date as Timestamp)?.toDate()?.toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+    })
 
     return (
         <Animated.View entering={FadeInDown.delay(index * 70)
@@ -98,16 +104,18 @@ const TransactionItem = ({
                 <View style={styles.categoryDes}>
                     <Typo size={17}>{category.label}</Typo>
                     <Typo size={12} textProps={{ numberOfLines: 1 }}>
-                        Paid wifi bill
+                        {item?.description}
                     </Typo>
                 </View>
 
                 <View style={styles.amountDate}>
-                    <Typo fontWeight={'500'} color={colors.primary}>
-                        - $23
+                    <Typo fontWeight={'500'} color={item?.type == "income" ? colors.primary : colors.rose}>
+                        {
+                            `${item?.type == "income" ? "+ $" : "- $"}${item?.amount}`
+                        }
                     </Typo>
                     <Typo size={13} color={colors.neutral400}>
-                        12 jan
+                        {date}
                     </Typo>
                 </View>
             </TouchableOpacity>
